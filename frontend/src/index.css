@@ -1,0 +1,348 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: linear-gradient(180deg, var(--background), var(--secondaryBackground));
+  color: var(--text);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font-family: inherit;
+}
+
+/* ---- page shell ------------------------------------------------------- */
+
+.page-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-content {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 0 64px;
+  flex: 1;
+}
+
+/* ---- hero header -------------------------------------------------------
+   Mirrors app/Context/TopScreen.tsx: a gradient hero with the shield mark. */
+
+.hero-header {
+  height: 130px;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(120deg, var(--background), var(--secondaryBackground));
+  border-bottom: 1px solid var(--shadow);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-header::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 15% 120%, color-mix(in srgb, var(--baseColor) 25%, transparent), transparent 60%);
+  pointer-events: none;
+}
+
+.hero-inner {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  z-index: 1;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* ---- nav tabs ---- */
+
+.nav-tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--boxBackground);
+  padding: 4px;
+  border-radius: 10px;
+  box-shadow: 2px 2px 4px var(--shadow);
+}
+
+.nav-tab {
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: var(--secondaryText);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.nav-tab.active {
+  background: var(--baseColor);
+  color: var(--invertText);
+}
+
+.icon-button {
+  width: 36px;
+  height: 36px;
+  border-radius: 50px;
+  border: none;
+  background: var(--boxBackground);
+  color: var(--text);
+  box-shadow: 2px 2px 4px var(--shadow);
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---- cards ---- */
+
+.card {
+  background: var(--boxBackground);
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 2px 2px 4px var(--shadow);
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 12px;
+}
+
+.section-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0 0 12px;
+}
+
+.page-title {
+  font-size: 28px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.meta-text {
+  font-size: 12px;
+  color: var(--secondaryText);
+}
+
+/* ---- buttons ---- */
+
+.btn-primary {
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: none;
+  background: linear-gradient(120deg, var(--buttonColor), var(--baseColor));
+  color: var(--invertText);
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: 1px solid var(--shadow);
+  background: transparent;
+  color: var(--text);
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+/* ---- forms ---- */
+
+.field-label {
+  font-size: 12px;
+  color: var(--secondaryText);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.text-input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--shadow);
+  background: var(--background);
+  color: var(--text);
+  font-size: 14px;
+}
+
+.error-banner {
+  background: var(--errorLightLight);
+  color: var(--error);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 14px;
+}
+
+/* ---- data table ---- */
+
+.data-table-wrap {
+  overflow-x: auto;
+  border-radius: 10px;
+}
+
+table.data-table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13px;
+}
+
+table.data-table th,
+table.data-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--shadow);
+  text-align: left;
+  white-space: nowrap;
+  max-width: 320px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+table.data-table th {
+  color: var(--secondaryText);
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+  background: var(--boxBackground);
+}
+
+table.data-table tbody tr:hover {
+  background: color-mix(in srgb, var(--baseColor) 6%, transparent);
+}
+
+.null-cell {
+  color: var(--secondaryText);
+  font-style: italic;
+}
+
+/* ---- login ---- */
+
+.login-shell {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-card {
+  width: 340px;
+  padding: 24px;
+}
+
+/* ---- pills / segmented ---- */
+
+.pill-row {
+  display: inline-flex;
+  background: var(--background);
+  border-radius: 10px;
+  padding: 4px;
+  gap: 4px;
+}
+
+.pill {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  background: transparent;
+  color: var(--secondaryText);
+}
+
+.pill.active {
+  background: var(--baseColor);
+  color: var(--invertText);
+}
+
+/* ---- color scheme page ---- */
+
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.color-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.color-field-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.swatch-input {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  border: 1px solid var(--shadow);
+  padding: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.swatch-input:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* Checkerboard behind the fill so semi-transparent colors (alpha < ff) are
+   visibly distinguishable from fully opaque ones. */
+.swatch-preview {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  border: 1px solid var(--shadow);
+  flex-shrink: 0;
+  background-image: linear-gradient(45deg, #80808033 25%, transparent 25%), linear-gradient(-45deg, #80808033 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #80808033 75%), linear-gradient(-45deg, transparent 75%, #80808033 75%);
+  background-size: 10px 10px;
+  background-position: 0 0, 0 5px, 5px -5px, -5px 0px;
+}
+
+.preview-strip {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
