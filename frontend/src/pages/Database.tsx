@@ -10,10 +10,14 @@ export function Database() {
   const [offset, setOffset] = useState(0);
   const [loadingRows, setLoadingRows] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  // Mobile accordion expand state — which schema columns / row indices (on
-  // the current page) are expanded. Table/page switches start collapsed.
+  // Accordion expand state — which schema columns / row indices (on the
+  // current page) are expanded. Table/page switches start collapsed.
   const [expandedColumns, setExpandedColumns] = useState<Set<string>>(new Set());
   const [expandedRows, setExpandedRows] = useState<Set<number>>(new Set());
+  // Whether the Schema/Rows section cards themselves are expanded — both
+  // start closed.
+  const [schemaOpen, setSchemaOpen] = useState(false);
+  const [rowsOpen, setRowsOpen] = useState(false);
 
   useEffect(() => {
     api
@@ -122,135 +126,91 @@ export function Database() {
 
         {selectedTable && (
           <section className="card">
-            <div className="card-title">Schema</div>
-            <div className="data-table-wrap">
-              <table className="data-table">
-                <thead>
-                  <tr>
-                    <th>Column</th>
-                    <th>Type</th>
-                    <th>Nullable</th>
-                    <th>References</th>
-                    <th>Notes</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {selectedTable.columns.map((c) => (
-                    <tr key={c.name}>
-                      <td>
+            <button className="section-toggle" onClick={() => setSchemaOpen((o) => !o)}>
+              <span className="card-title" style={{ margin: 0 }}>
+                Schema
+              </span>
+              <span className="accordion-chevron">{schemaOpen ? "▾" : "▸"}</span>
+            </button>
+
+            {schemaOpen && (
+              <div className="accordion-list" style={{ marginTop: 12 }}>
+                {selectedTable.columns.map((c) => (
+                  <AccordionItem
+                    key={c.name}
+                    expanded={expandedColumns.has(c.name)}
+                    onToggle={() => toggleColumn(c.name)}
+                    label={
+                      <>
                         {c.name}
                         {c.name === selectedTable.primaryKey && (
                           <span className="meta-text" style={{ marginLeft: 6 }}>
                             PK
                           </span>
                         )}
-                      </td>
-                      <td>{c.type}</td>
-                      <td>{c.nullable ? "yes" : "no"}</td>
-                      <td>{c.fk ?? "—"}</td>
-                      <td>{c.description ?? "—"}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            <div className="mobile-accordion">
-              {selectedTable.columns.map((c) => (
-                <AccordionItem
-                  key={c.name}
-                  expanded={expandedColumns.has(c.name)}
-                  onToggle={() => toggleColumn(c.name)}
-                  label={
-                    <>
-                      {c.name}
-                      {c.name === selectedTable.primaryKey && (
-                        <span className="meta-text" style={{ marginLeft: 6 }}>
-                          PK
-                        </span>
-                      )}
-                    </>
-                  }
-                >
-                  <AccordionField label="Type" value={c.type} />
-                  <AccordionField label="Nullable" value={c.nullable ? "yes" : "no"} />
-                  <AccordionField label="References" value={c.fk ?? "—"} />
-                  <AccordionField label="Notes" value={c.description ?? "—"} />
-                </AccordionItem>
-              ))}
-            </div>
+                      </>
+                    }
+                  >
+                    <AccordionField label="Type" value={c.type} />
+                    <AccordionField label="Nullable" value={c.nullable ? "yes" : "no"} />
+                    <AccordionField label="References" value={c.fk ?? "—"} />
+                    <AccordionField label="Notes" value={c.description ?? "—"} />
+                  </AccordionItem>
+                ))}
+              </div>
+            )}
           </section>
         )}
 
         {selectedTable && (
           <section className="card">
-            <div className="toolbar-row" style={{ marginBottom: 12 }}>
-              <div className="card-title" style={{ margin: 0 }}>
-                Rows{rowsResponse ? ` (${rowsResponse.total})` : ""}
-              </div>
-              <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
-                <span className="meta-text">
-                  {rowsResponse ? `${rowsResponse.total === 0 ? 0 : offset + 1}–${Math.min(offset + PAGE_SIZE, rowsResponse.total)} of ${rowsResponse.total}` : ""}
+            <div className="toolbar-row">
+              <button className="section-toggle" onClick={() => setRowsOpen((o) => !o)}>
+                <span className="card-title" style={{ margin: 0 }}>
+                  Rows{rowsResponse ? ` (${rowsResponse.total})` : ""}
                 </span>
-                <button className="btn-secondary" disabled={offset === 0 || loadingRows} onClick={() => setOffset((o) => Math.max(0, o - PAGE_SIZE))}>
-                  Prev
-                </button>
-                <button
-                  className="btn-secondary"
-                  disabled={loadingRows || !rowsResponse || offset + PAGE_SIZE >= rowsResponse.total}
-                  onClick={() => setOffset((o) => o + PAGE_SIZE)}
-                >
-                  Next
-                </button>
-              </div>
-            </div>
+                <span className="accordion-chevron">{rowsOpen ? "▾" : "▸"}</span>
+              </button>
 
-            <div className="data-table-wrap">
-              <table className="data-table">
-                <thead>
-                  <tr>
-                    {columnOrder.map((name) => (
-                      <th key={name}>{name}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {rowsResponse?.rows.map((row, i) => (
-                    <tr key={i}>
-                      {columnOrder.map((name) => (
-                        <td key={name}>{formatCell(row[name])}</td>
-                      ))}
-                    </tr>
-                  ))}
-                  {rowsResponse && rowsResponse.rows.length === 0 && (
-                    <tr>
-                      <td colSpan={columnOrder.length} className="meta-text">
-                        No rows.
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
-
-            <div className="mobile-accordion">
-              {rowsResponse?.rows.map((row, i) => {
-                const pkValue = row[selectedTable.primaryKey];
-                const label = pkValue !== undefined && pkValue !== null ? `${selectedTable.primaryKey}: ${pkValue}` : `Row ${offset + i + 1}`;
-                return (
-                  <AccordionItem key={i} label={label} expanded={expandedRows.has(i)} onToggle={() => toggleRow(i)}>
-                    {columnOrder.map((name) => (
-                      <AccordionField key={name} label={name} value={formatCell(row[name])} />
-                    ))}
-                  </AccordionItem>
-                );
-              })}
-              {rowsResponse && rowsResponse.rows.length === 0 && (
-                <div className="meta-text" style={{ padding: "12px 4px" }}>
-                  No rows.
+              {rowsOpen && (
+                <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
+                  <span className="meta-text">
+                    {rowsResponse ? `${rowsResponse.total === 0 ? 0 : offset + 1}–${Math.min(offset + PAGE_SIZE, rowsResponse.total)} of ${rowsResponse.total}` : ""}
+                  </span>
+                  <button className="btn-secondary" disabled={offset === 0 || loadingRows} onClick={() => setOffset((o) => Math.max(0, o - PAGE_SIZE))}>
+                    Prev
+                  </button>
+                  <button
+                    className="btn-secondary"
+                    disabled={loadingRows || !rowsResponse || offset + PAGE_SIZE >= rowsResponse.total}
+                    onClick={() => setOffset((o) => o + PAGE_SIZE)}
+                  >
+                    Next
+                  </button>
                 </div>
               )}
             </div>
+
+            {rowsOpen && (
+              <div className="accordion-list" style={{ marginTop: 12 }}>
+                {rowsResponse?.rows.map((row, i) => {
+                  const pkValue = row[selectedTable.primaryKey];
+                  const label = pkValue !== undefined && pkValue !== null ? `${selectedTable.primaryKey}: ${pkValue}` : `Row ${offset + i + 1}`;
+                  return (
+                    <AccordionItem key={i} label={label} expanded={expandedRows.has(i)} onToggle={() => toggleRow(i)}>
+                      {columnOrder.map((name) => (
+                        <AccordionField key={name} label={name} value={formatCell(row[name])} />
+                      ))}
+                    </AccordionItem>
+                  );
+                })}
+                {rowsResponse && rowsResponse.rows.length === 0 && (
+                  <div className="meta-text" style={{ padding: "12px 4px" }}>
+                    No rows.
+                  </div>
+                )}
+              </div>
+            )}
           </section>
         )}
       </div>
@@ -267,9 +227,8 @@ function formatCell(value: unknown): string | JSX.Element {
   return String(value);
 }
 
-// Mobile replacement for a wide <table>: a tap-to-expand row per record,
-// showing just its label until opened. Used for both the Schema and Rows
-// sections — hidden on desktop / shown on mobile via .mobile-accordion.
+// A tap-to-expand row per record, showing just its label until opened.
+// Used for both the Schema and Rows sections instead of a wide scrolling table.
 function AccordionItem({ label, expanded, onToggle, children }: { label: ReactNode; expanded: boolean; onToggle: () => void; children: ReactNode }) {
   return (
     <div className="accordion-item">

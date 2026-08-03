@@ -227,6 +227,19 @@ button {
   margin: 0 0 12px;
 }
 
+/* Clickable card-title + chevron that toggles an entire section open/closed
+   (e.g. the Schema/Rows cards on the Database page). */
+.section-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+  cursor: pointer;
+}
+
 .section-title {
   font-size: 20px;
   font-weight: 600;
@@ -352,51 +365,16 @@ button {
   gap: 12px;
 }
 
-/* ---- data table ---- */
-
-.data-table-wrap {
-  overflow-x: auto;
-  border-radius: 10px;
-}
-
-table.data-table {
-  border-collapse: collapse;
-  width: 100%;
-  font-size: 13px;
-}
-
-table.data-table th,
-table.data-table td {
-  padding: 8px 12px;
-  border-bottom: 1px solid var(--shadow);
-  text-align: left;
-  white-space: nowrap;
-  max-width: 320px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-table.data-table th {
-  color: var(--secondaryText);
-  font-weight: 600;
-  position: sticky;
-  top: 0;
-  background: var(--boxBackground);
-}
-
-table.data-table tbody tr:hover {
-  background: color-mix(in srgb, var(--baseColor) 6%, transparent);
-}
-
 .null-cell {
   color: var(--secondaryText);
   font-style: italic;
 }
 
-/* ---- mobile accordion (replaces .data-table-wrap below the breakpoint) ---- */
+/* ---- accordion (Schema / Rows lists on the Database page) ---- */
 
-.mobile-accordion {
-  display: none;
+.accordion-list {
+  display: flex;
+  flex-direction: column;
 }
 
 .accordion-item {
@@ -595,14 +573,5 @@ table.data-table tbody tr:hover {
   .db-sidebar-mobile {
     display: block;
     width: 100%;
-  }
-
-  /* Schema/Rows tables become tap-to-expand lists instead of wide tables. */
-  .data-table-wrap {
-    display: none;
-  }
-
-  .mobile-accordion {
-    display: block;
   }
 }
