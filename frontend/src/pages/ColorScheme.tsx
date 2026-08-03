@@ -140,12 +140,7 @@ export function ColorScheme() {
       {error && <div className="error-banner">{error}</div>}
 
       {loading && (
-        <>
-          <section className="card">
-            <Skeleton height={140}>
-              <LoadingIndicator size="sm" />
-            </Skeleton>
-          </section>
+        <div className="color-scheme-layout">
           <section className="card">
             <Skeleton width="30%" style={{ marginBottom: 16 }} />
             <div className="color-grid">
@@ -154,43 +149,16 @@ export function ColorScheme() {
               ))}
             </div>
           </section>
-        </>
+          <section className="card">
+            <Skeleton height={140}>
+              <LoadingIndicator size="sm" />
+            </Skeleton>
+          </section>
+        </div>
       )}
 
       {!loading && (
-        <>
-          <section className="card">
-            <div className="toolbar-row" style={{ marginBottom: 12 }}>
-              <div className="card-title" style={{ margin: 0 }}>
-                Preview
-              </div>
-              <div className="pill-row">
-                <button className={`pill${previewMode === "static" ? " active" : ""}`} onClick={() => setPreviewMode("static")}>
-                  Static Preview
-                </button>
-                <button className={`pill${previewMode === "live" ? " active" : ""}`} onClick={() => setPreviewMode("live")}>
-                  Live App Simulator
-                </button>
-              </div>
-            </div>
-
-            {previewMode === "static" && <Preview colors={draft} />}
-
-            {previewMode === "live" &&
-              (!APP_PREVIEW_URL ? (
-                <div className="meta-text">
-                  Set <code>VITE_APP_PREVIEW_URL</code> (frontend/.env) to the deployed Expo web app's URL to preview it here.
-                </div>
-              ) : (
-                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12 }}>
-                  <button className="btn-secondary" onClick={() => setLiveReloadKey((k) => k + 1)} style={{ alignSelf: "flex-end" }}>
-                    Refresh
-                  </button>
-                  <PhoneFrame ref={liveFrameRef} key={liveReloadKey} src={APP_PREVIEW_URL} width={280} height={608} onLoad={sendLivePreview} />
-                </div>
-              ))}
-          </section>
-
+        <div className="color-scheme-layout">
           <section className="card">
             <div className="toolbar-row" style={{ marginBottom: 12 }}>
               <div className="card-title" style={{ margin: 0 }}>
@@ -218,7 +186,39 @@ export function ColorScheme() {
               ))}
             </div>
           </section>
-        </>
+
+          <section className="card">
+            <div className="toolbar-row" style={{ marginBottom: 12 }}>
+              <div className="card-title" style={{ margin: 0 }}>
+                Preview
+              </div>
+              <div className="pill-row">
+                <button className={`pill${previewMode === "static" ? " active" : ""}`} onClick={() => setPreviewMode("static")}>
+                  Static Preview
+                </button>
+                <button className={`pill${previewMode === "live" ? " active" : ""}`} onClick={() => setPreviewMode("live")}>
+                  Live App Simulator
+                </button>
+              </div>
+            </div>
+
+            {previewMode === "static" && <Preview colors={draft} />}
+
+            {previewMode === "live" &&
+              (!APP_PREVIEW_URL ? (
+                <div className="meta-text">
+                  Set <code>VITE_APP_PREVIEW_URL</code> (frontend/.env) to the deployed Expo web app's URL to preview it here.
+                </div>
+              ) : (
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12 }}>
+                  <button className="btn-secondary" onClick={() => setLiveReloadKey((k) => k + 1)} style={{ alignSelf: "flex-end" }}>
+                    Refresh
+                  </button>
+                  <PhoneFrame ref={liveFrameRef} key={liveReloadKey} src={APP_PREVIEW_URL} width={320} height={694} onLoad={sendLivePreview} />
+                </div>
+              ))}
+          </section>
+        </div>
       )}
     </div>
   );

@@ -468,6 +468,15 @@ button {
 
 /* ---- color scheme page ---- */
 
+/* Edits on the left, Preview on the right (desktop) — collapses to a single
+   stacked column below the mobile breakpoint (see media query). */
+.color-scheme-layout {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  align-items: start;
+  gap: 20px;
+}
+
 .color-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -690,5 +699,9 @@ button {
   .db-sidebar-mobile {
     display: block;
     width: 100%;
+  }
+
+  .color-scheme-layout {
+    grid-template-columns: 1fr;
   }
 }
