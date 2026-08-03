@@ -29,8 +29,8 @@ export function Layout() {
             <button className="icon-button" onClick={toggleMode} title="Toggle admin UI theme">
               {mode === "dark" ? "☀️" : "🌙"}
             </button>
-            <button className="icon-button" onClick={() => logout()} title="Log out">
-              ⏻
+            <button className="btn-logout" onClick={() => logout()}>
+              Logout
             </button>
           </div>
         </div>

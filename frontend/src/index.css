@@ -193,6 +193,22 @@ button {
   cursor: pointer;
 }
 
+.btn-logout {
+  height: 36px;
+  padding: 0 14px;
+  border-radius: 8px;
+  border: 1px solid var(--errorLightLight);
+  background: var(--errorLightLight);
+  color: var(--error);
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.btn-logout:hover {
+  border-color: var(--error);
+}
+
 /* ---- forms ---- */
 
 .field-label {
