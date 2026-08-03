@@ -13,6 +13,7 @@ function RequireAuth({ children }: { children: JSX.Element }) {
   return children;
 }
 
+
 function RedirectIfAuthed({ children }: { children: JSX.Element }) {
   const { authenticated } = useAuth();
   if (authenticated) return <Navigate to="/database" replace />;
