@@ -22,8 +22,8 @@ function RedirectIfAuthed({ children }: { children: JSX.Element }) {
 
 export default function App() {
   return (
-    <ThemeProvider>
-      <AuthProvider>
+    <AuthProvider>
+      <ThemeProvider>
         <BrowserRouter>
           <Routes>
             <Route
@@ -48,7 +48,7 @@ export default function App() {
             <Route path="*" element={<Navigate to="/database" replace />} />
           </Routes>
         </BrowserRouter>
-      </AuthProvider>
-    </ThemeProvider>
+      </ThemeProvider>
+    </AuthProvider>
   );
 }

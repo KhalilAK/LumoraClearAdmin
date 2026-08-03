@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { api, ApiError, type ThemeColorRow, type ThemeColorsResponse } from "../api/client";
 import { darkPalette, lightPalette } from "../theme/colors";
+import { useTheme } from "../context/ThemeContext";
 
 type Mode = "light" | "dark";
 
@@ -37,6 +38,7 @@ function toEditable(row: ThemeColorRow | null, mode: Mode): Record<string, strin
 }
 
 export function ColorScheme() {
+  const { refetchColors } = useTheme();
   const [mode, setMode] = useState<Mode>("light");
   const [remote, setRemote] = useState<ThemeColorsResponse | null>(null);
   const [draft, setDraft] = useState<Record<string, string>>(toEditable(null, "light"));
@@ -78,6 +80,7 @@ export function ColorScheme() {
       const updated = await api.putThemeColors(mode, draft);
       setRemote((r) => ({ ...(r ?? { light: null, dark: null }), [mode]: updated }) as ThemeColorsResponse);
       setSavedAt(Date.now());
+      refetchColors(); // so this site's own chrome picks up the change immediately
     } catch (err) {
       setError(err instanceof ApiError ? err.message : "Failed to save theme colors");
     } finally {
