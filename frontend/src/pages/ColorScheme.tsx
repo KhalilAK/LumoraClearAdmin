@@ -1,12 +1,23 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { api, ApiError, type ThemeColorRow, type ThemeColorsResponse } from "../api/client";
 import { darkPalette, lightPalette } from "../theme/colors";
 import { useTheme } from "../context/ThemeContext";
 import { LoadingIndicator } from "../components/LoadingIndicator";
 import { Skeleton } from "../components/Skeleton";
-import { PhoneFrame } from "../components/PhoneFrame";
+import { PhoneFrame, type PhoneFrameHandle } from "../components/PhoneFrame";
 
 const APP_PREVIEW_URL = import.meta.env.VITE_APP_PREVIEW_URL as string | undefined;
+
+// Target the preview app's own origin rather than "*" once we know it —
+// APP_PREVIEW_URL gives us that for free.
+const APP_PREVIEW_ORIGIN = (() => {
+  if (!APP_PREVIEW_URL) return undefined;
+  try {
+    return new URL(APP_PREVIEW_URL).origin;
+  } catch {
+    return undefined;
+  }
+})();
 
 type Mode = "light" | "dark";
 
@@ -47,6 +58,7 @@ export function ColorScheme() {
   const [mode, setMode] = useState<Mode>("light");
   const [previewMode, setPreviewMode] = useState<"static" | "live">("static");
   const [liveReloadKey, setLiveReloadKey] = useState(0);
+  const liveFrameRef = useRef<PhoneFrameHandle>(null);
   const [remote, setRemote] = useState<ThemeColorsResponse | null>(null);
   const [draft, setDraft] = useState<Record<string, string>>(toEditable(null, "light"));
   const [loading, setLoading] = useState(true);
@@ -65,6 +77,19 @@ export function ColorScheme() {
       .finally(() => setLoading(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Pushes the in-progress (unsaved) draft into the live app simulator so
+  // edits show up immediately, instead of only after Save. No-ops if the
+  // simulator isn't open (ref is unset) — the Expo app applies this in
+  // memory only, per its own ThemeContext postMessage listener.
+  function sendLivePreview() {
+    liveFrameRef.current?.postMessage({ type: "LUMORACLEAR_PREVIEW_THEME", mode, colors: draft }, APP_PREVIEW_ORIGIN);
+  }
+
+  useEffect(() => {
+    if (previewMode === "live") sendLivePreview();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [draft, mode, previewMode]);
 
   function switchMode(next: Mode) {
     setMode(next);
@@ -88,6 +113,9 @@ export function ColorScheme() {
       setRemote((r) => ({ ...(r ?? { light: null, dark: null }), [mode]: updated }) as ThemeColorsResponse);
       setSavedAt(Date.now());
       refetchColors(); // so this site's own chrome picks up the change immediately
+      // Reload the live simulator so it drops the in-memory preview override
+      // and re-fetches the real saved value — confirms the save actually took.
+      setLiveReloadKey((k) => k + 1);
     } catch (err) {
       setError(err instanceof ApiError ? err.message : "Failed to save theme colors");
     } finally {
@@ -158,7 +186,7 @@ export function ColorScheme() {
                   <button className="btn-secondary" onClick={() => setLiveReloadKey((k) => k + 1)} style={{ alignSelf: "flex-end" }}>
                     Refresh
                   </button>
-                  <PhoneFrame key={liveReloadKey} src={APP_PREVIEW_URL} width={280} height={608} />
+                  <PhoneFrame ref={liveFrameRef} key={liveReloadKey} src={APP_PREVIEW_URL} width={280} height={608} onLoad={sendLivePreview} />
                 </div>
               ))}
           </section>

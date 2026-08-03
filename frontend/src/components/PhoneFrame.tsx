@@ -1,5 +1,11 @@
-import { useState } from "react";
+import { forwardRef, useImperativeHandle, useRef, useState } from "react";
 import { LoadingIndicator } from "./LoadingIndicator";
+
+export interface PhoneFrameHandle {
+  // Forwards to the embedded iframe's contentWindow.postMessage, so the page
+  // holding a ref doesn't need to know the iframe exists underneath.
+  postMessage: (message: unknown, targetOrigin?: string) => void;
+}
 
 interface PhoneFrameProps {
   src: string;
@@ -14,8 +20,18 @@ interface PhoneFrameProps {
 // Simulator" to preview the real Expo web app, not just the static mockup.
 // Chrome proportions (notch, radii, bezel) scale off `width` so the frame
 // still looks like a phone at sizes other than the default.
-export function PhoneFrame({ src, width = 375, height = 812, title = "App preview", onLoad }: PhoneFrameProps) {
+export const PhoneFrame = forwardRef<PhoneFrameHandle, PhoneFrameProps>(function PhoneFrame(
+  { src, width = 375, height = 812, title = "App preview", onLoad },
+  ref
+) {
+  const iframeRef = useRef<HTMLIFrameElement>(null);
   const [loaded, setLoaded] = useState(false);
+
+  useImperativeHandle(ref, () => ({
+    postMessage: (message, targetOrigin = "*") => {
+      iframeRef.current?.contentWindow?.postMessage(message, targetOrigin);
+    },
+  }));
 
   function handleLoad() {
     setLoaded(true);
@@ -32,10 +48,13 @@ export function PhoneFrame({ src, width = 375, height = 812, title = "App previe
 
   return (
     <div className="phone-frame" style={{ width, height, padding: bezel, borderRadius: outerRadius }}>
-      <div className="phone-frame-notch" style={{ top: bezel, width: notchWidth, height: notchHeight, borderRadius: `0 0 ${Math.round(notchHeight * 0.6)}px ${Math.round(notchHeight * 0.6)}px` }} />
+      <div
+        className="phone-frame-notch"
+        style={{ top: bezel, width: notchWidth, height: notchHeight, borderRadius: `0 0 ${Math.round(notchHeight * 0.6)}px ${Math.round(notchHeight * 0.6)}px` }}
+      />
 
       <div className="phone-frame-screen" style={{ borderRadius: innerRadius }}>
-        <iframe src={src} title={title} className="phone-frame-iframe" onLoad={handleLoad} />
+        <iframe ref={iframeRef} src={src} title={title} className="phone-frame-iframe" onLoad={handleLoad} />
 
         {!loaded && (
           <div className="phone-frame-loading">
@@ -50,4 +69,4 @@ export function PhoneFrame({ src, width = 375, height = 812, title = "App previe
       />
     </div>
   );
-}
+});
