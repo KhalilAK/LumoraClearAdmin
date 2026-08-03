@@ -569,6 +569,9 @@ button {
   background: var(--secondaryBackground);
   border-radius: 8px;
   animation: skeleton-pulse 1.2s ease-in-out infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 @keyframes skeleton-pulse {

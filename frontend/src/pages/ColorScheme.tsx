@@ -108,9 +108,10 @@ export function ColorScheme() {
 
       {loading && (
         <>
-          <LoadingIndicator />
           <section className="card">
-            <Skeleton height={140} />
+            <Skeleton height={140}>
+              <LoadingIndicator size="sm" />
+            </Skeleton>
           </section>
           <section className="card">
             <Skeleton width="30%" style={{ marginBottom: 16 }} />

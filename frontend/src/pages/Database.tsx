@@ -86,14 +86,9 @@ export function Database() {
           Tables
         </div>
         {!tables && !error && (
-          <>
+          <Skeleton height={200}>
             <LoadingIndicator size="sm" />
-            <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-              {Array.from({ length: 6 }).map((_, i) => (
-                <Skeleton key={i} />
-              ))}
-            </div>
-          </>
+          </Skeleton>
         )}
         <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
           {tables?.map((t) => (
@@ -136,14 +131,11 @@ export function Database() {
         {error && <div className="error-banner">{error}</div>}
 
         {!tables && !error && (
-          <>
-            <div className="card">
-              <Skeleton width="30%" />
-            </div>
-            <div className="card">
-              <Skeleton width="30%" />
-            </div>
-          </>
+          <section className="card">
+            <Skeleton height={220}>
+              <LoadingIndicator size="sm" />
+            </Skeleton>
+          </section>
         )}
 
         {selectedTable && (
@@ -214,11 +206,9 @@ export function Database() {
             </div>
 
             {rowsOpen && loadingRows && (
-              <div style={{ display: "flex", flexDirection: "column", gap: 6, marginTop: 12 }}>
-                {Array.from({ length: 6 }).map((_, i) => (
-                  <Skeleton key={i} />
-                ))}
-              </div>
+              <Skeleton height={160} style={{ marginTop: 12 }}>
+                <LoadingIndicator size="sm" />
+              </Skeleton>
             )}
 
             {rowsOpen && !loadingRows && (
