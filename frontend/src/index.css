@@ -90,6 +90,12 @@ button {
   flex-shrink: 0;
 }
 
+.header-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
 /* ---- nav tabs ---- */
 
 .nav-tabs {
@@ -130,6 +136,80 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* Swaps in for .nav-tabs + .header-actions below the mobile breakpoint. */
+.hamburger-button {
+  display: none;
+}
+
+/* ---- mobile nav drawer ---- */
+
+.drawer-overlay {
+  position: fixed;
+  inset: 0;
+  background: #00000076;
+  z-index: 50;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.drawer-panel {
+  width: 75%;
+  height: 100%;
+  background: var(--boxBackground);
+  box-shadow: -2px 0 8px var(--shadow);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  animation: drawer-slide-in 0.2s ease-out;
+}
+
+@keyframes drawer-slide-in {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.drawer-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.drawer-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.drawer-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.drawer-nav-item {
+  padding: 12px 14px;
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.drawer-nav-item.active {
+  background: var(--baseColor);
+  color: var(--invertText);
+}
+
+.drawer-logout {
+  width: 100%;
 }
 
 /* ---- cards ---- */
@@ -236,6 +316,42 @@ button {
   font-size: 14px;
 }
 
+/* ---- database page layout ---- */
+
+.db-layout {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.db-sidebar {
+  width: 240px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 20px;
+}
+
+/* Swaps in for .db-sidebar below the mobile breakpoint (see media query). */
+.db-sidebar-mobile {
+  display: none;
+}
+
+.db-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.toolbar-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
 /* ---- data table ---- */
 
 .data-table-wrap {
@@ -277,6 +393,61 @@ table.data-table tbody tr:hover {
   font-style: italic;
 }
 
+/* ---- mobile accordion (replaces .data-table-wrap below the breakpoint) ---- */
+
+.mobile-accordion {
+  display: none;
+}
+
+.accordion-item {
+  border-bottom: 1px solid var(--shadow);
+}
+
+.accordion-item:last-child {
+  border-bottom: none;
+}
+
+.accordion-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 4px;
+  background: none;
+  border: none;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+
+.accordion-chevron {
+  color: var(--secondaryText);
+  font-size: 11px;
+  flex-shrink: 0;
+}
+
+.accordion-body {
+  padding: 0 4px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.accordion-field {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 13px;
+  word-break: break-word;
+}
+
+.accordion-field .field-label {
+  margin-bottom: 0;
+}
+
 /* ---- login ---- */
 
 .login-shell {
@@ -287,7 +458,7 @@ table.data-table tbody tr:hover {
 }
 
 .login-card {
-  width: 340px;
+  width: min(340px, 92vw);
   padding: 24px;
 }
 
@@ -370,4 +541,68 @@ table.data-table tbody tr:hover {
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
+}
+
+/* ---- mobile ---- */
+
+@media (max-width: 720px) {
+  .page-content {
+    width: 92%;
+    padding: 16px 0 48px;
+  }
+
+  .page-title {
+    font-size: 22px;
+  }
+
+  /* Header collapses to [logo+brand | hamburger]; nav links, theme toggle,
+     and logout all move into the slide-out drawer instead. */
+  .hero-header {
+    height: auto;
+    padding: 14px 0;
+  }
+
+  .hero-inner {
+    flex-wrap: wrap;
+    row-gap: 10px;
+  }
+
+  .brand {
+    font-size: 16px;
+  }
+
+  .header-actions {
+    display: none;
+  }
+
+  .nav-tabs {
+    display: none;
+  }
+
+  .hamburger-button {
+    display: flex;
+  }
+
+  /* Database page: sidebar list becomes a dropdown above the content. */
+  .db-layout {
+    flex-direction: column;
+  }
+
+  .db-sidebar {
+    display: none;
+  }
+
+  .db-sidebar-mobile {
+    display: block;
+    width: 100%;
+  }
+
+  /* Schema/Rows tables become tap-to-expand lists instead of wide tables. */
+  .data-table-wrap {
+    display: none;
+  }
+
+  .mobile-accordion {
+    display: block;
+  }
 }

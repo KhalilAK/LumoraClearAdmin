@@ -87,7 +87,7 @@ export function ColorScheme() {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+      <div className="toolbar-row">
         <h1 className="page-title">Color Scheme</h1>
         <div className="pill-row">
           <button className={`pill${mode === "light" ? " active" : ""}`} onClick={() => switchMode("light")}>
@@ -110,11 +110,11 @@ export function ColorScheme() {
           </section>
 
           <section className="card">
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+            <div className="toolbar-row" style={{ marginBottom: 12 }}>
               <div className="card-title" style={{ margin: 0 }}>
                 {mode === "light" ? "Light" : "Dark"} palette
               </div>
-              <div style={{ display: "flex", gap: 8 }}>
+              <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
                 <button className="btn-secondary" onClick={resetToDefaults}>
                   Reset to app defaults
                 </button>

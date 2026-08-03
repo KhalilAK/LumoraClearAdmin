@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { api, ApiError, type TableMeta, type TableRowsResponse } from "../api/client";
 
 const PAGE_SIZE = 50;
@@ -10,6 +10,10 @@ export function Database() {
   const [offset, setOffset] = useState(0);
   const [loadingRows, setLoadingRows] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // Mobile accordion expand state — which schema columns / row indices (on
+  // the current page) are expanded. Table/page switches start collapsed.
+  const [expandedColumns, setExpandedColumns] = useState<Set<string>>(new Set());
+  const [expandedRows, setExpandedRows] = useState<Set<number>>(new Set());
 
   useEffect(() => {
     api
@@ -24,7 +28,30 @@ export function Database() {
   useEffect(() => {
     if (!selectedKey) return;
     setOffset(0);
+    setExpandedColumns(new Set());
   }, [selectedKey]);
+
+  useEffect(() => {
+    setExpandedRows(new Set());
+  }, [selectedKey, offset]);
+
+  function toggleColumn(name: string) {
+    setExpandedColumns((prev) => {
+      const next = new Set(prev);
+      if (next.has(name)) next.delete(name);
+      else next.add(name);
+      return next;
+    });
+  }
+
+  function toggleRow(index: number) {
+    setExpandedRows((prev) => {
+      const next = new Set(prev);
+      if (next.has(index)) next.delete(index);
+      else next.add(index);
+      return next;
+    });
+  }
 
   useEffect(() => {
     if (!selectedKey) return;
@@ -47,8 +74,8 @@ export function Database() {
   }, [selectedTable, rowsResponse]);
 
   return (
-    <div style={{ display: "flex", gap: 20, alignItems: "flex-start" }}>
-      <aside className="card" style={{ width: 240, flexShrink: 0, position: "sticky", top: 20 }}>
+    <div className="db-layout">
+      <aside className="card db-sidebar">
         <div className="card-title" style={{ fontSize: 15 }}>
           Tables
         </div>
@@ -72,7 +99,20 @@ export function Database() {
         </div>
       </aside>
 
-      <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 20 }}>
+      <div className="db-sidebar-mobile">
+        <label className="field-label" htmlFor="table-select">
+          Table
+        </label>
+        <select id="table-select" className="text-input" value={selectedKey ?? ""} onChange={(e) => setSelectedKey(e.target.value)}>
+          {tables?.map((t) => (
+            <option key={t.key} value={t.key}>
+              {t.displayName}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="db-content">
         <div>
           <h1 className="page-title">{selectedTable?.displayName ?? "Database"}</h1>
           {selectedTable?.description && <p className="meta-text">{selectedTable.description}</p>}
@@ -114,16 +154,41 @@ export function Database() {
                 </tbody>
               </table>
             </div>
+
+            <div className="mobile-accordion">
+              {selectedTable.columns.map((c) => (
+                <AccordionItem
+                  key={c.name}
+                  expanded={expandedColumns.has(c.name)}
+                  onToggle={() => toggleColumn(c.name)}
+                  label={
+                    <>
+                      {c.name}
+                      {c.name === selectedTable.primaryKey && (
+                        <span className="meta-text" style={{ marginLeft: 6 }}>
+                          PK
+                        </span>
+                      )}
+                    </>
+                  }
+                >
+                  <AccordionField label="Type" value={c.type} />
+                  <AccordionField label="Nullable" value={c.nullable ? "yes" : "no"} />
+                  <AccordionField label="References" value={c.fk ?? "—"} />
+                  <AccordionField label="Notes" value={c.description ?? "—"} />
+                </AccordionItem>
+              ))}
+            </div>
           </section>
         )}
 
         {selectedTable && (
           <section className="card">
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+            <div className="toolbar-row" style={{ marginBottom: 12 }}>
               <div className="card-title" style={{ margin: 0 }}>
                 Rows{rowsResponse ? ` (${rowsResponse.total})` : ""}
               </div>
-              <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
                 <span className="meta-text">
                   {rowsResponse ? `${rowsResponse.total === 0 ? 0 : offset + 1}–${Math.min(offset + PAGE_SIZE, rowsResponse.total)} of ${rowsResponse.total}` : ""}
                 </span>
@@ -167,6 +232,25 @@ export function Database() {
                 </tbody>
               </table>
             </div>
+
+            <div className="mobile-accordion">
+              {rowsResponse?.rows.map((row, i) => {
+                const pkValue = row[selectedTable.primaryKey];
+                const label = pkValue !== undefined && pkValue !== null ? `${selectedTable.primaryKey}: ${pkValue}` : `Row ${offset + i + 1}`;
+                return (
+                  <AccordionItem key={i} label={label} expanded={expandedRows.has(i)} onToggle={() => toggleRow(i)}>
+                    {columnOrder.map((name) => (
+                      <AccordionField key={name} label={name} value={formatCell(row[name])} />
+                    ))}
+                  </AccordionItem>
+                );
+              })}
+              {rowsResponse && rowsResponse.rows.length === 0 && (
+                <div className="meta-text" style={{ padding: "12px 4px" }}>
+                  No rows.
+                </div>
+              )}
+            </div>
           </section>
         )}
       </div>
@@ -181,4 +265,28 @@ function formatCell(value: unknown): string | JSX.Element {
   if (typeof value === "boolean") return value ? "true" : "false";
   if (typeof value === "object") return JSON.stringify(value);
   return String(value);
+}
+
+// Mobile replacement for a wide <table>: a tap-to-expand row per record,
+// showing just its label until opened. Used for both the Schema and Rows
+// sections — hidden on desktop / shown on mobile via .mobile-accordion.
+function AccordionItem({ label, expanded, onToggle, children }: { label: ReactNode; expanded: boolean; onToggle: () => void; children: ReactNode }) {
+  return (
+    <div className="accordion-item">
+      <button className="accordion-header" onClick={onToggle}>
+        <span>{label}</span>
+        <span className="accordion-chevron">{expanded ? "▾" : "▸"}</span>
+      </button>
+      {expanded && <div className="accordion-body">{children}</div>}
+    </div>
+  );
+}
+
+function AccordionField({ label, value }: { label: string; value: ReactNode }) {
+  return (
+    <div className="accordion-field">
+      <span className="field-label">{label}</span>
+      <span>{value}</span>
+    </div>
+  );
 }
