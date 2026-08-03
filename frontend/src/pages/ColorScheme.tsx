@@ -4,6 +4,9 @@ import { darkPalette, lightPalette } from "../theme/colors";
 import { useTheme } from "../context/ThemeContext";
 import { LoadingIndicator } from "../components/LoadingIndicator";
 import { Skeleton } from "../components/Skeleton";
+import { PhoneFrame } from "../components/PhoneFrame";
+
+const APP_PREVIEW_URL = import.meta.env.VITE_APP_PREVIEW_URL as string | undefined;
 
 type Mode = "light" | "dark";
 
@@ -42,6 +45,8 @@ function toEditable(row: ThemeColorRow | null, mode: Mode): Record<string, strin
 export function ColorScheme() {
   const { refetchColors } = useTheme();
   const [mode, setMode] = useState<Mode>("light");
+  const [previewMode, setPreviewMode] = useState<"static" | "live">("static");
+  const [liveReloadKey, setLiveReloadKey] = useState(0);
   const [remote, setRemote] = useState<ThemeColorsResponse | null>(null);
   const [draft, setDraft] = useState<Record<string, string>>(toEditable(null, "light"));
   const [loading, setLoading] = useState(true);
@@ -127,8 +132,35 @@ export function ColorScheme() {
       {!loading && (
         <>
           <section className="card">
-            <div className="card-title">Preview</div>
-            <Preview colors={draft} />
+            <div className="toolbar-row" style={{ marginBottom: 12 }}>
+              <div className="card-title" style={{ margin: 0 }}>
+                Preview
+              </div>
+              <div className="pill-row">
+                <button className={`pill${previewMode === "static" ? " active" : ""}`} onClick={() => setPreviewMode("static")}>
+                  Static Preview
+                </button>
+                <button className={`pill${previewMode === "live" ? " active" : ""}`} onClick={() => setPreviewMode("live")}>
+                  Live App Simulator
+                </button>
+              </div>
+            </div>
+
+            {previewMode === "static" && <Preview colors={draft} />}
+
+            {previewMode === "live" &&
+              (!APP_PREVIEW_URL ? (
+                <div className="meta-text">
+                  Set <code>VITE_APP_PREVIEW_URL</code> (frontend/.env) to the deployed Expo web app's URL to preview it here.
+                </div>
+              ) : (
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12 }}>
+                  <button className="btn-secondary" onClick={() => setLiveReloadKey((k) => k + 1)} style={{ alignSelf: "flex-end" }}>
+                    Refresh
+                  </button>
+                  <PhoneFrame key={liveReloadKey} src={APP_PREVIEW_URL} width={280} height={608} />
+                </div>
+              ))}
           </section>
 
           <section className="card">

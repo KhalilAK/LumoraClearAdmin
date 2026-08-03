@@ -35,6 +35,9 @@ export function Database() {
     if (!selectedKey) return;
     setOffset(0);
     setExpandedColumns(new Set());
+    // Otherwise the previous table's row count/rows stay on screen — behind
+    // the loading skeleton once it kicks in, but visible in the interim.
+    setRowsResponse(null);
   }, [selectedKey]);
 
   useEffect(() => {
@@ -207,7 +210,7 @@ export function Database() {
 
             {rowsOpen && loadingRows && (
               <Skeleton height={160} style={{ marginTop: 12 }}>
-                <LoadingIndicator size="sm" />
+                <LoadingIndicator size="sm" label="Getting rows…" />
               </Skeleton>
             )}
 

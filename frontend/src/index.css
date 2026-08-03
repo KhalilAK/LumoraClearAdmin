@@ -521,6 +521,60 @@ button {
   flex-wrap: wrap;
 }
 
+/* ---- phone frame (Live App Simulator) ---- */
+
+/* Size-dependent properties (padding, radii, notch/indicator dimensions) are
+   set inline by PhoneFrame.tsx, scaled off the `width` prop. */
+
+.phone-frame {
+  position: relative;
+  box-sizing: border-box;
+  background: #111;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35), inset 0 0 0 2px rgba(255, 255, 255, 0.08);
+}
+
+.phone-frame-screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  overflow: hidden;
+}
+
+.phone-frame-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+  background: #fff;
+}
+
+.phone-frame-notch {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #111;
+  z-index: 2;
+}
+
+.phone-frame-home-indicator {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.5);
+  z-index: 2;
+}
+
+.phone-frame-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+  z-index: 1;
+}
+
 /* ---- loading indicator ---- */
 
 .loading-indicator {
@@ -636,23 +690,5 @@ button {
   .db-sidebar-mobile {
     display: block;
     width: 100%;
-  }
-
-  /* Center the Schema/Rows section headers and their accordion content. */
-  .db-content .toolbar-row {
-    justify-content: center;
-  }
-
-  .db-content .accordion-header {
-    justify-content: center;
-  }
-
-  .db-content .accordion-body {
-    align-items: center;
-  }
-
-  .db-content .accordion-field {
-    align-items: center;
-    text-align: center;
   }
 }
