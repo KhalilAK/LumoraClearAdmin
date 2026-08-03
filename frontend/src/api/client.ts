@@ -1,4 +1,10 @@
-const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:4000";
+// Defaults to "" (relative /api/... requests) so the browser always sees the
+// API as same-origin — proxied to the real backend by vite.config.ts in dev
+// and vercel.json in production. That keeps the session cookie first-party;
+// calling the backend's own domain directly makes it a cross-site cookie,
+// which iOS Safari/Chrome (both WebKit) block by default (this is what broke
+// mobile login). Only set VITE_API_BASE_URL to bypass the proxy on purpose.
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "";
 
 export class ApiError extends Error {
   status: number;
