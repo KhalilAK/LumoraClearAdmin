@@ -2,13 +2,14 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import { ThemeProvider } from "./context/ThemeContext";
 import { Layout } from "./components/Layout";
+import { LoadingIndicator } from "./components/LoadingIndicator";
 import { Login } from "./pages/Login";
 import { Database } from "./pages/Database";
 import { ColorScheme } from "./pages/ColorScheme";
 
 function RequireAuth({ children }: { children: JSX.Element }) {
   const { authenticated } = useAuth();
-  if (authenticated === null) return <div style={{ padding: 40 }}>Loading…</div>;
+  if (authenticated === null) return <LoadingIndicator />;
   if (!authenticated) return <Navigate to="/login" replace />;
   return children;
 }

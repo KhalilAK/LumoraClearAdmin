@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { api, ApiError, type TableMeta, type TableRowsResponse } from "../api/client";
+import { LoadingIndicator } from "../components/LoadingIndicator";
+import { Skeleton } from "../components/Skeleton";
 
 const PAGE_SIZE = 50;
 
@@ -83,7 +85,16 @@ export function Database() {
         <div className="card-title" style={{ fontSize: 15 }}>
           Tables
         </div>
-        {!tables && !error && <div className="meta-text">Loading…</div>}
+        {!tables && !error && (
+          <>
+            <LoadingIndicator size="sm" />
+            <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+              {Array.from({ length: 6 }).map((_, i) => (
+                <Skeleton key={i} />
+              ))}
+            </div>
+          </>
+        )}
         <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
           {tables?.map((t) => (
             <button
@@ -123,6 +134,17 @@ export function Database() {
         </div>
 
         {error && <div className="error-banner">{error}</div>}
+
+        {!tables && !error && (
+          <>
+            <div className="card">
+              <Skeleton width="30%" />
+            </div>
+            <div className="card">
+              <Skeleton width="30%" />
+            </div>
+          </>
+        )}
 
         {selectedTable && (
           <section className="card">
@@ -191,7 +213,15 @@ export function Database() {
               )}
             </div>
 
-            {rowsOpen && (
+            {rowsOpen && loadingRows && (
+              <div style={{ display: "flex", flexDirection: "column", gap: 6, marginTop: 12 }}>
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <Skeleton key={i} />
+                ))}
+              </div>
+            )}
+
+            {rowsOpen && !loadingRows && (
               <div className="accordion-list" style={{ marginTop: 12 }}>
                 {rowsResponse?.rows.map((row, i) => {
                   const pkValue = row[selectedTable.primaryKey];

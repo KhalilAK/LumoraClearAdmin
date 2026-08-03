@@ -521,6 +521,66 @@ button {
   flex-wrap: wrap;
 }
 
+/* ---- loading indicator ---- */
+
+.loading-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 24px;
+  width: 100%;
+}
+
+.loading-indicator-lg {
+  min-height: 60vh;
+}
+
+.loading-logo {
+  width: 64px;
+  height: auto;
+  animation: loading-pulse 1.2s ease-in-out infinite;
+}
+
+.loading-logo-sm {
+  width: 32px;
+}
+
+@keyframes loading-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.6;
+  }
+}
+
+.loading-text {
+  color: var(--secondaryText);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.skeleton {
+  background: var(--secondaryBackground);
+  border-radius: 8px;
+  animation: skeleton-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes skeleton-pulse {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
 /* ---- mobile ---- */
 
 @media (max-width: 720px) {
@@ -573,5 +633,23 @@ button {
   .db-sidebar-mobile {
     display: block;
     width: 100%;
+  }
+
+  /* Center the Schema/Rows section headers and their accordion content. */
+  .db-content .toolbar-row {
+    justify-content: center;
+  }
+
+  .db-content .accordion-header {
+    justify-content: center;
+  }
+
+  .db-content .accordion-body {
+    align-items: center;
+  }
+
+  .db-content .accordion-field {
+    align-items: center;
+    text-align: center;
   }
 }

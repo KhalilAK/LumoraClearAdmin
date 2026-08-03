@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { api, ApiError, type ThemeColorRow, type ThemeColorsResponse } from "../api/client";
 import { darkPalette, lightPalette } from "../theme/colors";
 import { useTheme } from "../context/ThemeContext";
+import { LoadingIndicator } from "../components/LoadingIndicator";
+import { Skeleton } from "../components/Skeleton";
 
 type Mode = "light" | "dark";
 
@@ -103,7 +105,23 @@ export function ColorScheme() {
       </div>
 
       {error && <div className="error-banner">{error}</div>}
-      {loading && <div className="meta-text">Loading…</div>}
+
+      {loading && (
+        <>
+          <LoadingIndicator />
+          <section className="card">
+            <Skeleton height={140} />
+          </section>
+          <section className="card">
+            <Skeleton width="30%" style={{ marginBottom: 16 }} />
+            <div className="color-grid">
+              {FIELD_ORDER.map((key) => (
+                <Skeleton key={key} height={70} />
+              ))}
+            </div>
+          </section>
+        </>
+      )}
 
       {!loading && (
         <>
