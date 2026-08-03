@@ -1,6 +1,11 @@
 {
   "compilerOptions": {
     "composite": true,
+    // Composite projects can't disable emit, so redirect it away from the
+    // source tree — otherwise `tsc -b` writes vite.config.js next to
+    // vite.config.ts, and Vite's config loader picks the stale compiled .js
+    // over the real .ts source (this is what silently ate the dev proxy config).
+    "outDir": "node_modules/.tsc-out",
     "skipLibCheck": true,
     "module": "ESNext",
     "moduleResolution": "bundler",

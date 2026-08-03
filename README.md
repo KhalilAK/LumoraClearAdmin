@@ -32,9 +32,9 @@ the frontend or a committed file.
 
 ```
 cd frontend
-cp .env.example .env   # defaults already point at localhost:4000
+cp .env.example .env
 npm install
-npm run dev   # http://localhost:5173
+npm run dev   # http://localhost:5173, proxies /api/* to localhost:4000
 ```
 
 Log in with an existing LumoraClear account whose `role` is `Admin` or
@@ -50,6 +50,20 @@ Log in with an existing LumoraClear account whose `role` is `Admin` or
 - **Color Scheme** (`/colors`, read/write) — edit the `theme_colors` table
   (light/dark) with hex inputs + native color pickers and a live preview,
   same table the app reads via `GET /theme/colors`.
+
+## Deployment (Vercel + Render)
+
+The frontend calls relative `/api/...` paths, not the Render URL directly —
+`vite.config.ts` proxies those in dev, and `frontend/vercel.json` rewrites
+them to Render in production. This keeps the API same-origin from the
+browser's point of view, which matters: the session cookie would otherwise be
+a cross-site cookie (Vercel domain calling Render domain directly), and iOS
+Safari/Chrome (both WebKit) block those by default — that's what broke mobile
+login before this was added. Don't set `VITE_API_BASE_URL` on Vercel; leaving
+it unset is what makes the proxy path used.
+
+If `frontend/vercel.json`'s hardcoded Render URL ever changes (e.g. renamed
+service), update it there.
 
 ## Notes
 
