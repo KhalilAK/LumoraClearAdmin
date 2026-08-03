@@ -2,6 +2,7 @@ import { useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { ApiError } from "../api/client";
+import logo from "../assets/logo.png";
 
 export function Login() {
   const { login } = useAuth();
@@ -29,6 +30,7 @@ export function Login() {
     <div className="login-shell">
       <form className="card login-card" onSubmit={onSubmit}>
         <div className="brand" style={{ marginBottom: 20, justifyContent: "center" }}>
+          <img src={logo} alt="" className="brand-mark" />
           LumoraClear Admin
         </div>
 

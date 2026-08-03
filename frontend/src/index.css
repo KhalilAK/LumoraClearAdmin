@@ -81,6 +81,15 @@ button {
   color: var(--text);
 }
 
+.brand-mark {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  object-fit: cover;
+  box-shadow: 2px 2px 4px var(--shadow);
+  flex-shrink: 0;
+}
+
 /* ---- nav tabs ---- */
 
 .nav-tabs {

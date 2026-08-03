@@ -1,6 +1,7 @@
 import { NavLink, Outlet } from "react-router-dom";
 import { useTheme } from "../context/ThemeContext";
 import { useAuth } from "../context/AuthContext";
+import logo from "../assets/logo.png";
 
 export function Layout() {
   const { mode, toggleMode } = useTheme();
@@ -10,7 +11,10 @@ export function Layout() {
     <div className="page-shell">
       <header className="hero-header">
         <div className="hero-inner">
-          <div className="brand">LumoraClear Admin</div>
+          <div className="brand">
+            <img src={logo} alt="" className="brand-mark" />
+            LumoraClear Admin
+          </div>
 
           <nav className="nav-tabs">
             <NavLink to="/database" className={({ isActive }) => `nav-tab${isActive ? " active" : ""}`}>
