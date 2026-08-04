@@ -55,6 +55,10 @@ export const api = {
   getDashboardLayout: () => request<DashboardLayoutResponse>("/api/dashboard-layout"),
   putDashboardLayout: (order: string[]) =>
     request<DashboardLayoutResponse>("/api/dashboard-layout", { method: "PUT", body: JSON.stringify({ order }) }),
+
+  getPageLayout: (pageKey: string) => request<PageLayoutResponse>(`/api/page-layout/${encodeURIComponent(pageKey)}`),
+  putPageLayout: (pageKey: string, order: string[]) =>
+    request<PageLayoutResponse>(`/api/page-layout/${encodeURIComponent(pageKey)}`, { method: "PUT", body: JSON.stringify({ order }) }),
 };
 
 export interface ColumnMeta {
@@ -127,6 +131,12 @@ export interface LogsResponse {
 }
 
 export interface DashboardLayoutResponse {
+  order: string[];
+  updatedAt: string | null;
+}
+
+export interface PageLayoutResponse {
+  pageKey: string;
   order: string[];
   updatedAt: string | null;
 }
