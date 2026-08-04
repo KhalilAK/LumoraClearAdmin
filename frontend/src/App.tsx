@@ -7,6 +7,7 @@ import { Login } from "./pages/Login";
 import { Database } from "./pages/Database";
 import { ColorScheme } from "./pages/ColorScheme";
 import { Logs } from "./pages/Logs";
+import { Updates } from "./pages/Updates";
 import { LayoutEditor } from "./pages/LayoutEditor";
 
 function RequireAuth({ children }: { children: JSX.Element }) {
@@ -47,6 +48,7 @@ export default function App() {
               <Route path="/database" element={<Database />} />
               <Route path="/colors" element={<ColorScheme />} />
               <Route path="/logs" element={<Logs />} />
+              <Route path="/updates" element={<Updates />} />
               <Route path="/layout" element={<LayoutEditor />} />
               <Route path="/" element={<Navigate to="/database" replace />} />
             </Route>

@@ -51,7 +51,8 @@ export const api = {
     request<Record<string, unknown>>("/api/theme/colors", { method: "PUT", body: JSON.stringify({ mode, colors }) }),
 
   getLogs: (limit: number, offset: number) => request<LogsResponse>(`/api/logs?limit=${limit}&offset=${offset}`),
-
+  getRepos: () => request<RepoOption[]>("/api/logs/repos"),
+  getUpdates: (repoKey: string) => request<CommitUpdate[]>(`/api/logs/updates/${encodeURIComponent(repoKey)}`),
   getDashboardLayout: () => request<DashboardLayoutResponse>("/api/dashboard-layout"),
   putDashboardLayout: (order: string[]) =>
     request<DashboardLayoutResponse>("/api/dashboard-layout", { method: "PUT", body: JSON.stringify({ order }) }),
@@ -128,6 +129,22 @@ export interface LogsResponse {
   total: number;
   limit: number;
   offset: number;
+}
+
+export interface RepoOption {
+  key: string;
+  label: string;
+}
+
+export interface CommitUpdate {
+  sha: string;
+  shortSha: string;
+  message: string;
+  author: string;
+  username: string;
+  avatar: string | null;
+  date: string;
+  url: string;
 }
 
 export interface DashboardLayoutResponse {

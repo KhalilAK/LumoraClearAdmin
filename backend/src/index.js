@@ -62,6 +62,7 @@ app.use("/api/logs", requireAuth, logsRouter);
 app.use("/api/dashboard-layout", requireAuth, dashboardLayoutRouter);
 app.use("/api/page-layout", requireAuth, pageLayoutRouter);
 
+
 const port = process.env.PORT || 4000;
 app.listen(port, () => {
   console.log(`LumoraClear admin backend listening on http://localhost:${port}`);

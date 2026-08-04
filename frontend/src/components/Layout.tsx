@@ -8,6 +8,7 @@ const NAV_ITEMS = [
   { to: "/database", label: "Database" },
   { to: "/colors", label: "Color Scheme" },
   { to: "/logs", label: "Logs" },
+  { to: "/updates", label: "Updates" },
   { to: "/layout", label: "Layout" },
 ];
 
