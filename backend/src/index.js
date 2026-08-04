@@ -7,6 +7,7 @@ import { authRouter } from "./routes/auth.js";
 import { tablesRouter } from "./routes/tables.js";
 import { themeRouter } from "./routes/theme.js";
 import { logsRouter } from "./routes/logs.js";
+import { dashboardLayoutRouter } from "./routes/dashboardLayout.js";
 import { requireAuth } from "./middleware/requireAuth.js";
 
 const isProduction = process.env.NODE_ENV === "production";
@@ -57,6 +58,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/tables", requireAuth, tablesRouter);
 app.use("/api/theme", requireAuth, themeRouter);
 app.use("/api/logs", requireAuth, logsRouter);
+app.use("/api/dashboard-layout", requireAuth, dashboardLayoutRouter);
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => {

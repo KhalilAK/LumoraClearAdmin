@@ -51,6 +51,10 @@ export const api = {
     request<Record<string, unknown>>("/api/theme/colors", { method: "PUT", body: JSON.stringify({ mode, colors }) }),
 
   getLogs: (limit: number, offset: number) => request<LogsResponse>(`/api/logs?limit=${limit}&offset=${offset}`),
+
+  getDashboardLayout: () => request<DashboardLayoutResponse>("/api/dashboard-layout"),
+  putDashboardLayout: (order: string[]) =>
+    request<DashboardLayoutResponse>("/api/dashboard-layout", { method: "PUT", body: JSON.stringify({ order }) }),
 };
 
 export interface ColumnMeta {
@@ -120,4 +124,9 @@ export interface LogsResponse {
   total: number;
   limit: number;
   offset: number;
+}
+
+export interface DashboardLayoutResponse {
+  order: string[];
+  updatedAt: string | null;
 }

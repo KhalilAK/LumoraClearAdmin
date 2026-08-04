@@ -138,6 +138,11 @@ button {
   justify-content: center;
 }
 
+.icon-button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
 /* Swaps in for .nav-tabs + .header-actions below the mobile breakpoint. */
 .hamburger-button {
   display: none;
@@ -342,6 +347,55 @@ button {
   padding: 6px 4px;
 }
 
+/* ---- dashboard layout page (drag-to-reorder cards) ---- */
+
+.reorder-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.reorder-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--shadow);
+  background: var(--background);
+  cursor: grab;
+}
+
+.reorder-item:active {
+  cursor: grabbing;
+}
+
+.reorder-handle {
+  color: var(--secondaryText);
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.reorder-label {
+  flex: 1;
+  min-width: 0;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.reorder-buttons {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.reorder-buttons .icon-button {
+  width: 28px;
+  height: 28px;
+  font-size: 11px;
+}
+
 .error-banner {
   background: var(--errorLightLight);
   color: var(--error);
@@ -526,11 +580,11 @@ button {
   color: var(--invertText);
 }
 
-/* ---- color scheme page ---- */
+/* ---- edit + live preview split (Color Scheme, Dashboard Layout) ---- */
 
 /* Edits on the left, Preview on the right (desktop) — collapses to a single
    stacked column below the mobile breakpoint (see media query). */
-.color-scheme-layout {
+.edit-preview-layout {
   display: grid;
   grid-template-columns: 1fr 360px;
   align-items: start;
@@ -761,7 +815,7 @@ button {
     width: 100%;
   }
 
-  .color-scheme-layout {
+  .edit-preview-layout {
     grid-template-columns: 1fr;
   }
 }

@@ -5,19 +5,7 @@ import { useTheme } from "../context/ThemeContext";
 import { LoadingIndicator } from "../components/LoadingIndicator";
 import { Skeleton } from "../components/Skeleton";
 import { PhoneFrame, type PhoneFrameHandle } from "../components/PhoneFrame";
-
-const APP_PREVIEW_URL = import.meta.env.VITE_APP_PREVIEW_URL as string | undefined;
-
-// Target the preview app's own origin rather than "*" once we know it —
-// APP_PREVIEW_URL gives us that for free.
-const APP_PREVIEW_ORIGIN = (() => {
-  if (!APP_PREVIEW_URL) return undefined;
-  try {
-    return new URL(APP_PREVIEW_URL).origin;
-  } catch {
-    return undefined;
-  }
-})();
+import { APP_PREVIEW_URL, APP_PREVIEW_ORIGIN } from "../config/preview";
 
 type Mode = "light" | "dark";
 
@@ -140,7 +128,7 @@ export function ColorScheme() {
       {error && <div className="error-banner">{error}</div>}
 
       {loading && (
-        <div className="color-scheme-layout">
+        <div className="edit-preview-layout">
           <section className="card">
             <Skeleton width="30%" style={{ marginBottom: 16 }} />
             <div className="color-grid">
@@ -158,7 +146,7 @@ export function ColorScheme() {
       )}
 
       {!loading && (
-        <div className="color-scheme-layout">
+        <div className="edit-preview-layout">
           <section className="card">
             <div className="toolbar-row" style={{ marginBottom: 12 }}>
               <div className="card-title" style={{ margin: 0 }}>

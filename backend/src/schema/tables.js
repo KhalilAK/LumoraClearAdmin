@@ -269,6 +269,18 @@ export const TABLES = [
       { name: "updated_at", type: "timestamp", nullable: false },
     ],
   },
+  {
+    key: "dashboard_layout",
+    tableName: "dashboard_layout",
+    displayName: "Dashboard Layout",
+    primaryKey: "id",
+    description: "Single row (id=1) controlling the app dashboard's card order — also managed via the Dashboard Layout page.",
+    columns: [
+      { name: "id", type: "integer", nullable: false },
+      { name: "order", type: "text[]", nullable: false, description: "ordered card keys — see SECTION_RENDERERS in app/(tabs)/index.tsx" },
+      { name: "updated_at", type: "timestamp", nullable: false },
+    ],
+  },
 ];
 
 export function getTableByKey(key) {
