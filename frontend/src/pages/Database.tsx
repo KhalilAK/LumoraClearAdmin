@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { api, ApiError, type TableMeta, type TableRowsResponse } from "../api/client";
 import { LoadingIndicator } from "../components/LoadingIndicator";
 import { Skeleton } from "../components/Skeleton";
+import { AccordionItem, AccordionField } from "../components/Accordion";
 
 const PAGE_SIZE = 50;
 
@@ -248,27 +249,4 @@ function formatCell(value: unknown): string | JSX.Element {
   if (typeof value === "boolean") return value ? "true" : "false";
   if (typeof value === "object") return JSON.stringify(value);
   return String(value);
-}
-
-// A tap-to-expand row per record, showing just its label until opened.
-// Used for both the Schema and Rows sections instead of a wide scrolling table.
-function AccordionItem({ label, expanded, onToggle, children }: { label: ReactNode; expanded: boolean; onToggle: () => void; children: ReactNode }) {
-  return (
-    <div className="accordion-item">
-      <button className="accordion-header" onClick={onToggle}>
-        <span>{label}</span>
-        <span className="accordion-chevron">{expanded ? "▾" : "▸"}</span>
-      </button>
-      {expanded && <div className="accordion-body">{children}</div>}
-    </div>
-  );
-}
-
-function AccordionField({ label, value }: { label: string; value: ReactNode }) {
-  return (
-    <div className="accordion-field">
-      <span className="field-label">{label}</span>
-      <span>{value}</span>
-    </div>
-  );
 }

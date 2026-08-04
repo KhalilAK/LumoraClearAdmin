@@ -6,6 +6,7 @@ import { LoadingIndicator } from "./components/LoadingIndicator";
 import { Login } from "./pages/Login";
 import { Database } from "./pages/Database";
 import { ColorScheme } from "./pages/ColorScheme";
+import { Logs } from "./pages/Logs";
 
 function RequireAuth({ children }: { children: JSX.Element }) {
   const { authenticated } = useAuth();
@@ -44,6 +45,7 @@ export default function App() {
             >
               <Route path="/database" element={<Database />} />
               <Route path="/colors" element={<ColorScheme />} />
+              <Route path="/logs" element={<Logs />} />
               <Route path="/" element={<Navigate to="/database" replace />} />
             </Route>
             <Route path="*" element={<Navigate to="/database" replace />} />

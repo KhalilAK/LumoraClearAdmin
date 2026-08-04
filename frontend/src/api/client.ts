@@ -49,6 +49,8 @@ export const api = {
   getThemeColors: () => request<ThemeColorsResponse>("/api/theme/colors"),
   putThemeColors: (mode: "light" | "dark", colors: Record<string, string>) =>
     request<Record<string, unknown>>("/api/theme/colors", { method: "PUT", body: JSON.stringify({ mode, colors }) }),
+
+  getLogs: (limit: number, offset: number) => request<LogsResponse>(`/api/logs?limit=${limit}&offset=${offset}`),
 };
 
 export interface ColumnMeta {
@@ -97,4 +99,25 @@ export interface ThemeColorRow {
 export interface ThemeColorsResponse {
   light: ThemeColorRow | null;
   dark: ThemeColorRow | null;
+}
+
+export interface AuditLogRow {
+  id: number;
+  user_id: number | null;
+  action: string;
+  target_type: string | null;
+  target_id: number | null;
+  ip_address: string | null;
+  user_agent: string | null;
+  success: boolean;
+  error_message: string | null;
+  notes: string | null;
+  timestamp: string;
+}
+
+export interface LogsResponse {
+  rows: AuditLogRow[];
+  total: number;
+  limit: number;
+  offset: number;
 }

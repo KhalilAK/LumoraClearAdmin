@@ -370,6 +370,45 @@ button {
   font-style: italic;
 }
 
+/* ---- logs page ----
+   Log entries reuse the shared accordion (.accordion-item etc, see
+   Accordion.tsx) — these classes style the always-visible summary that goes
+   in its `label` slot: title + timestamp on one line, user id below. */
+
+.log-entry-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+}
+
+.log-entry-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text);
+  flex-wrap: wrap;
+}
+
+.log-entry-timestamp {
+  margin-left: auto;
+}
+
+.log-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.log-meta {
+  color: var(--secondaryText);
+  font-size: 12px;
+}
+
 /* ---- accordion (Schema / Rows lists on the Database page) ---- */
 
 .accordion-list {
