@@ -3,6 +3,7 @@ import { api, ApiError, type TableMeta, type TableRowsResponse } from "../api/cl
 import { LoadingIndicator } from "../components/LoadingIndicator";
 import { Skeleton } from "../components/Skeleton";
 import { AccordionItem, AccordionField } from "../components/Accordion";
+import { Pager } from "../components/Pager";
 
 const PAGE_SIZE = 50;
 
@@ -190,21 +191,12 @@ export function Database() {
                 <span className="accordion-chevron">{rowsOpen ? "▾" : "▸"}</span>
               </button>
 
-              {rowsOpen && (
+              {rowsOpen && rowsResponse && (
                 <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
                   <span className="meta-text">
-                    {rowsResponse ? `${rowsResponse.total === 0 ? 0 : offset + 1}–${Math.min(offset + PAGE_SIZE, rowsResponse.total)} of ${rowsResponse.total}` : ""}
+                    {rowsResponse.total === 0 ? 0 : offset + 1}–{Math.min(offset + PAGE_SIZE, rowsResponse.total)} of {rowsResponse.total}
                   </span>
-                  <button className="btn-secondary" disabled={offset === 0 || loadingRows} onClick={() => setOffset((o) => Math.max(0, o - PAGE_SIZE))}>
-                    Prev
-                  </button>
-                  <button
-                    className="btn-secondary"
-                    disabled={loadingRows || !rowsResponse || offset + PAGE_SIZE >= rowsResponse.total}
-                    onClick={() => setOffset((o) => o + PAGE_SIZE)}
-                  >
-                    Next
-                  </button>
+                  <Pager offset={offset} limit={PAGE_SIZE} total={rowsResponse.total} onOffsetChange={setOffset} disabled={loadingRows} />
                 </div>
               )}
             </div>

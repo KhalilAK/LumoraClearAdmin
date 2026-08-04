@@ -6,6 +6,7 @@ import cookieSession from "cookie-session";
 import { authRouter } from "./routes/auth.js";
 import { tablesRouter } from "./routes/tables.js";
 import { themeRouter } from "./routes/theme.js";
+import { logsRouter } from "./routes/logs.js";
 import { requireAuth } from "./middleware/requireAuth.js";
 
 const isProduction = process.env.NODE_ENV === "production";
@@ -55,6 +56,7 @@ app.get("/api/health", (req, res) => res.json({ ok: true }));
 app.use("/api/auth", authRouter);
 app.use("/api/tables", requireAuth, tablesRouter);
 app.use("/api/theme", requireAuth, themeRouter);
+app.use("/api/logs", requireAuth, logsRouter);
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => {

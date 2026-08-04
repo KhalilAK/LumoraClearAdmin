@@ -3,6 +3,7 @@ import { api, ApiError, type AuditLogRow, type LogsResponse } from "../api/clien
 import { LoadingIndicator } from "../components/LoadingIndicator";
 import { Skeleton } from "../components/Skeleton";
 import { AccordionItem, AccordionField } from "../components/Accordion";
+import { Pager } from "../components/Pager";
 
 const PAGE_SIZE = 50;
 
@@ -101,16 +102,7 @@ export function Logs() {
                   ? 0
                   : `${offset + 1}–${Math.min(offset + PAGE_SIZE, logsResponse.total)} of ${logsResponse.total}`}
               </span>
-              <button className="btn-secondary" disabled={offset === 0} onClick={() => setOffset((o) => Math.max(0, o - PAGE_SIZE))}>
-                Prev
-              </button>
-              <button
-                className="btn-secondary"
-                disabled={offset + PAGE_SIZE >= logsResponse.total}
-                onClick={() => setOffset((o) => o + PAGE_SIZE)}
-              >
-                Next
-              </button>
+              <Pager offset={offset} limit={PAGE_SIZE} total={logsResponse.total} onOffsetChange={setOffset} />
             </div>
           </div>
 

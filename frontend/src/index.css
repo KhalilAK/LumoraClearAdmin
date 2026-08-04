@@ -321,6 +321,27 @@ button {
   font-size: 14px;
 }
 
+/* ---- pager ---- */
+
+.pager {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.pager-page-form {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pager-page-input {
+  width: 56px;
+  text-align: center;
+  padding: 6px 4px;
+}
+
 .error-banner {
   background: var(--errorLightLight);
   color: var(--error);
