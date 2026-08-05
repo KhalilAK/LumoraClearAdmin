@@ -31,7 +31,7 @@ logsRouter.get("/", async (req, res) => {
 // private repos from callers who can't prove access, rather than returning
 // 403) — this is why GITHUB_API_KEY has to actually be sent.
 const REPOS = {
-  appTest: { owner: "KhalilAK", repo: "AppTest", label: "AppTest" },
+  lumoraClearApp: { owner: "KhalilAK", repo: "LumoraClearApp", label: "LumoraClearApp" },
   lumoraClearAdmin: { owner: "KhalilAK", repo: "LumoraClearAdmin", label: "LumoraClearAdmin" },
 };
 
