@@ -136,10 +136,7 @@ export function LayoutEditor() {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-      <div>
-        <h1 className="page-title">Layout</h1>
-        <p className="meta-text">Follows whatever screen is showing in the preview — navigate the app below to switch.</p>
-      </div>
+      <p className="meta-text">Follows whatever screen is showing in the preview — navigate the app below to switch.</p>
 
       {error && <div className="error-banner">{error}</div>}
 

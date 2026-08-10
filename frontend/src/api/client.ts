@@ -60,6 +60,10 @@ export const api = {
   getPageLayout: (pageKey: string) => request<PageLayoutResponse>(`/api/page-layout/${encodeURIComponent(pageKey)}`),
   putPageLayout: (pageKey: string, order: string[]) =>
     request<PageLayoutResponse>(`/api/page-layout/${encodeURIComponent(pageKey)}`, { method: "PUT", body: JSON.stringify({ order }) }),
+
+  getPageContent: (pageKey: string) => request<PageContentResponse>(`/api/page-content/${encodeURIComponent(pageKey)}`),
+  putPageContent: (pageKey: string, content: Record<string, string>) =>
+    request<PageContentResponse>(`/api/page-content/${encodeURIComponent(pageKey)}`, { method: "PUT", body: JSON.stringify({ content }) }),
 };
 
 export interface ColumnMeta {
@@ -155,5 +159,11 @@ export interface DashboardLayoutResponse {
 export interface PageLayoutResponse {
   pageKey: string;
   order: string[];
+  updatedAt: string | null;
+}
+
+export interface PageContentResponse {
+  pageKey: string;
+  content: Record<string, string>;
   updatedAt: string | null;
 }

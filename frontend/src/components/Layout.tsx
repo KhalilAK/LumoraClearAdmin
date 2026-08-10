@@ -5,11 +5,10 @@ import { useAuth } from "../context/AuthContext";
 import logo from "../assets/logo.png";
 
 const NAV_ITEMS = [
-  { to: "/database", label: "Database" },
-  { to: "/colors", label: "Color Scheme" },
   { to: "/logs", label: "Logs" },
+  { to: "/edit", label: "Edit" },
   { to: "/updates", label: "Updates" },
-  { to: "/layout", label: "Layout" },
+  { to: "/database", label: "Database" },
 ];
 
 export function Layout() {

@@ -113,16 +113,13 @@ export function ColorScheme() {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-      <div className="toolbar-row">
-        <h1 className="page-title">Color Scheme</h1>
-        <div className="pill-row">
-          <button className={`pill${mode === "light" ? " active" : ""}`} onClick={() => switchMode("light")}>
-            Light
-          </button>
-          <button className={`pill${mode === "dark" ? " active" : ""}`} onClick={() => switchMode("dark")}>
-            Dark
-          </button>
-        </div>
+      <div className="pill-row">
+        <button className={`pill${mode === "light" ? " active" : ""}`} onClick={() => switchMode("light")}>
+          Light
+        </button>
+        <button className={`pill${mode === "dark" ? " active" : ""}`} onClick={() => switchMode("dark")}>
+          Dark
+        </button>
       </div>
 
       {error && <div className="error-banner">{error}</div>}
