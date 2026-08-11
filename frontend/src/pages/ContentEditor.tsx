@@ -117,6 +117,99 @@ const CONTENT_REGISTRY: Record<string, ContentPageConfig> = {
       { key: "appStoreButton", label: "\"Rate on App Store\" button" },
     ],
   },
+  // Only the explicitly-named keys given for these — "etc." (login),
+  // "field labels per step" (signup), and "sync-error copy" (plans) were
+  // left unenumerated, so those fields aren't shown here yet.
+  login: {
+    title: "Login",
+    fields: [
+      { key: "emailLabel", label: "Email field label" },
+      { key: "passwordLabel", label: "Password field label" },
+      { key: "loginButton", label: "Login button" },
+      { key: "signUpButton", label: "Sign up button" },
+      { key: "forgotPasswordLink", label: "Forgot password link" },
+      { key: "socialDividerText", label: "Social login divider text" },
+    ],
+  },
+  signup: {
+    title: "Sign Up",
+    fields: [
+      { key: "step1Label", label: "Step 1 label" },
+      { key: "step2Label", label: "Step 2 label" },
+      { key: "step3Label", label: "Step 3 label" },
+      { key: "continueButton", label: "Continue button" },
+      { key: "signUpButton", label: "Sign up button" },
+      { key: "backButton", label: "Back button" },
+      { key: "alreadyHaveAccountLink", label: "\"Already have an account?\" link" },
+      { key: "passwordReq1", label: "Password requirement 1" },
+      { key: "passwordReq2", label: "Password requirement 2" },
+      { key: "passwordReq3", label: "Password requirement 3" },
+      { key: "passwordReq4", label: "Password requirement 4" },
+      { key: "passwordReq5", label: "Password requirement 5" },
+    ],
+  },
+  forgotPassword: {
+    title: "Forgot Password",
+    fields: [
+      { key: "phoneLabel", label: "Phone field label" },
+      { key: "sendCodeButton", label: "Send Code button" },
+      { key: "cancelButton", label: "Cancel button" },
+      { key: "noPhoneLink", label: "\"No phone?\" link" },
+    ],
+  },
+  verifyCode: {
+    title: "Verify Code (OTP)",
+    fields: [
+      { key: "codeLabel", label: "Code field label" },
+      { key: "approveButton", label: "Approve button" },
+      { key: "cancelButton", label: "Cancel button" },
+    ],
+  },
+  updatePassword: {
+    title: "Set New Password",
+    fields: [
+      { key: "newPasswordLabel", label: "New password field label" },
+      { key: "confirmPasswordLabel", label: "Confirm password field label" },
+      { key: "updateButton", label: "Update button" },
+      { key: "cancelButton", label: "Cancel button" },
+      { key: "passwordReq1", label: "Password requirement 1" },
+      { key: "passwordReq2", label: "Password requirement 2" },
+      { key: "passwordReq3", label: "Password requirement 3" },
+      { key: "passwordReq4", label: "Password requirement 4" },
+      { key: "passwordReq5", label: "Password requirement 5" },
+    ],
+  },
+  bills: {
+    title: "Bills tab",
+    fields: [
+      { key: "title", label: "Page title" },
+      { key: "emptyMessage", label: "Empty state message" },
+      { key: "filterEmptyMessage", label: "Filtered empty state message" },
+      { key: "potentialIssueTitle", label: "Potential Issue — title" },
+      { key: "potentialIssueMessage", label: "Potential Issue — message" },
+      { key: "reviewBillButton", label: "Review Bill button" },
+      { key: "syncErrorTitle", label: "Sync Error — title" },
+      { key: "syncErrorFallbackMessage", label: "Sync Error — fallback message" },
+      { key: "serviceDateLabel", label: "Service Date label" },
+    ],
+  },
+  plans: {
+    title: "Insurance Plans tab",
+    fields: [
+      { key: "title", label: "Page title" },
+      { key: "emptyMessage", label: "Empty state message" },
+      { key: "memberIdLabel", label: "Member ID label" },
+      { key: "planTypeLabel", label: "Plan Type label" },
+      { key: "deductibleProgressLabel", label: "Deductible Progress label" },
+      { key: "primaryCopayLabel", label: "Primary Copay label" },
+      { key: "specialistCopayLabel", label: "Specialist Copay label" },
+      { key: "coinsuranceLabel", label: "Coinsurance label" },
+      { key: "outOfPocketLabel", label: "Out of Pocket label" },
+      { key: "viewDetailsButton", label: "View Details button" },
+      { key: "deletePlanModalTitle", label: "Delete Plan modal — title" },
+      { key: "deletePlanModalConfirmLabel", label: "Delete Plan modal — confirm button" },
+    ],
+  },
 };
 
 const DEFAULT_PAGE_KEY = "dashboard";

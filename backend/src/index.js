@@ -9,6 +9,8 @@ import { themeRouter } from "./routes/theme.js";
 import { logsRouter } from "./routes/logs.js";
 import { dashboardLayoutRouter } from "./routes/dashboardLayout.js";
 import { pageLayoutRouter } from "./routes/pageLayout.js";
+import { pageContentRouter } from "./routes/pageContent.js";
+import { cardStyleRouter } from "./routes/cardStyle.js";
 import { requireAuth } from "./middleware/requireAuth.js";
 
 const isProduction = process.env.NODE_ENV === "production";
@@ -19,6 +21,7 @@ app.set("trust proxy", 1); // Render sits behind a proxy — needed for secure c
 app.use(express.json());
 const allowedOrigins = [
   "http://localhost:5173",
+  "http://localhost:5174",
   "https://lumora-clear-admin.vercel.app",
   ...(process.env.FRONTEND_ORIGIN ? process.env.FRONTEND_ORIGIN.split(",") : [])
 ];
@@ -61,6 +64,8 @@ app.use("/api/theme", requireAuth, themeRouter);
 app.use("/api/logs", requireAuth, logsRouter);
 app.use("/api/dashboard-layout", requireAuth, dashboardLayoutRouter);
 app.use("/api/page-layout", requireAuth, pageLayoutRouter);
+app.use("/api/page-content", requireAuth, pageContentRouter);
+app.use("/api/card-style", requireAuth, cardStyleRouter);
 
 
 const port = process.env.PORT || 4000;

@@ -281,6 +281,26 @@ export const TABLES = [
       { name: "updated_at", type: "timestamp", nullable: false },
     ],
   },
+  {
+    key: "card_style",
+    tableName: "card_style",
+    displayName: "Card Style",
+    primaryKey: "mode",
+    description: "Global card/box appearance (border, shadow) — one row per light/dark mode, also managed via the Edit page.",
+    columns: [
+      { name: "mode", type: "string", nullable: false, description: "'light' | 'dark', primary key" },
+      { name: "borderRadius", type: "number", nullable: false },
+      { name: "borderWidth", type: "number", nullable: false },
+      { name: "borderColor", type: "string", nullable: false },
+      { name: "shadowColor", type: "string", nullable: false },
+      { name: "shadowOpacity", type: "number", nullable: false },
+      { name: "shadowRadius", type: "number", nullable: false },
+      { name: "shadowOffsetX", type: "number", nullable: false },
+      { name: "shadowOffsetY", type: "number", nullable: false },
+      { name: "elevation", type: "number", nullable: false, description: "Android shadow equivalent" },
+      { name: "updated_at", type: "timestamp", nullable: false },
+    ],
+  },
 ];
 
 export function getTableByKey(key) {

@@ -64,6 +64,10 @@ export const api = {
   getPageContent: (pageKey: string) => request<PageContentResponse>(`/api/page-content/${encodeURIComponent(pageKey)}`),
   putPageContent: (pageKey: string, content: Record<string, string>) =>
     request<PageContentResponse>(`/api/page-content/${encodeURIComponent(pageKey)}`, { method: "PUT", body: JSON.stringify({ content }) }),
+
+  getCardStyle: () => request<CardStyleResponse>("/api/card-style"),
+  putCardStyle: (mode: "light" | "dark", style: Partial<CardStyleFields>) =>
+    request<CardStyleRow>("/api/card-style", { method: "PUT", body: JSON.stringify({ mode, style }) }),
 };
 
 export interface ColumnMeta {
@@ -166,4 +170,26 @@ export interface PageContentResponse {
   pageKey: string;
   content: Record<string, string>;
   updatedAt: string | null;
+}
+
+export interface CardStyleFields {
+  borderRadius: number;
+  borderWidth: number;
+  borderColor: string;
+  shadowColor: string;
+  shadowOpacity: number;
+  shadowRadius: number;
+  shadowOffsetX: number;
+  shadowOffsetY: number;
+  elevation: number;
+}
+
+export interface CardStyleRow extends CardStyleFields {
+  mode: "light" | "dark";
+  updated_at: string;
+}
+
+export interface CardStyleResponse {
+  light: CardStyleRow | null;
+  dark: CardStyleRow | null;
 }
