@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
 import { api, ApiError, type TableMeta, type TableRowsResponse } from "../api/client";
-import { LoadingIndicator } from "../components/LoadingIndicator";
 import { Skeleton } from "../components/Skeleton";
 import { AccordionItem, AccordionField } from "../components/Accordion";
 import { Pager } from "../components/Pager";
@@ -91,9 +90,11 @@ export function Database() {
           Tables
         </div>
         {!tables && !error && (
-          <Skeleton height={200}>
-            <LoadingIndicator size="sm" />
-          </Skeleton>
+          <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+            {Array.from({ length: 6 }).map((_, i) => (
+              <Skeleton key={i} height={36} />
+            ))}
+          </div>
         )}
         <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
           {tables?.map((t) => (
@@ -136,11 +137,16 @@ export function Database() {
         {error && <div className="error-banner">{error}</div>}
 
         {!tables && !error && (
-          <section className="card">
-            <Skeleton height={220}>
-              <LoadingIndicator size="sm" />
-            </Skeleton>
-          </section>
+          <>
+            <section className="card">
+              <Skeleton width="20%" height={20} style={{ marginBottom: 12 }} />
+              <Skeleton height={140} />
+            </section>
+            <section className="card">
+              <Skeleton width="20%" height={20} style={{ marginBottom: 12 }} />
+              <Skeleton height={140} />
+            </section>
+          </>
         )}
 
         {selectedTable && (
@@ -202,9 +208,11 @@ export function Database() {
             </div>
 
             {rowsOpen && loadingRows && (
-              <Skeleton height={160} style={{ marginTop: 12 }}>
-                <LoadingIndicator size="sm" label="Getting rows…" />
-              </Skeleton>
+              <div style={{ display: "flex", flexDirection: "column", gap: 6, marginTop: 12 }}>
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <Skeleton key={i} height={44} />
+                ))}
+              </div>
             )}
 
             {rowsOpen && !loadingRows && (

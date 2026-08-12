@@ -18,7 +18,7 @@ export function Login() {
     setSubmitting(true);
     try {
       await login(email, password);
-      navigate("/database", { replace: true });
+      navigate("/logs", { replace: true });
     } catch (err) {
       setError(err instanceof ApiError ? err.message : "Login failed");
     } finally {
@@ -60,7 +60,14 @@ export function Login() {
         <input id="password" type="password" className="text-input" value={password} onChange={(e) => setPassword(e.target.value)} required />
 
         <button type="submit" className="btn-primary" style={{ width: "100%", marginTop: 16 }} disabled={submitting}>
-          {submitting ? "Signing in…" : "Sign in"}
+          {submitting ? (
+            <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
+              <span className="spinner" />
+              Logging in…
+            </span>
+          ) : (
+            "Sign in"
+          )}
         </button>
       </form>
     </div>

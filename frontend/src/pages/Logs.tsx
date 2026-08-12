@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { api, ApiError, type AuditLogRow, type LogsResponse } from "../api/client";
-import { LoadingIndicator } from "../components/LoadingIndicator";
 import { Skeleton } from "../components/Skeleton";
 import { AccordionItem, AccordionField } from "../components/Accordion";
 import { Pager } from "../components/Pager";
@@ -84,9 +83,15 @@ export function Logs() {
 
       {loading && (
         <section className="card">
-          <Skeleton height={220}>
-            <LoadingIndicator size="sm" label="Getting logs…" />
-          </Skeleton>
+          <div className="toolbar-row" style={{ marginBottom: 12 }}>
+            <Skeleton width="30%" height={20} />
+            <Skeleton width={140} height={32} />
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+            {Array.from({ length: 6 }).map((_, i) => (
+              <Skeleton key={i} height={44} />
+            ))}
+          </div>
         </section>
       )}
 

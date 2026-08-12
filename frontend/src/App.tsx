@@ -2,7 +2,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import { ThemeProvider } from "./context/ThemeContext";
 import { Layout } from "./components/Layout";
-import { LoadingIndicator } from "./components/LoadingIndicator";
+import { LoginSkeleton } from "./components/LoginSkeleton";
 import { Login } from "./pages/Login";
 import { Database } from "./pages/Database";
 import { Logs } from "./pages/Logs";
@@ -11,7 +11,7 @@ import { EditPage } from "./pages/EditPage";
 
 function RequireAuth({ children }: { children: JSX.Element }) {
   const { authenticated } = useAuth();
-  if (authenticated === null) return <LoadingIndicator />;
+  if (authenticated === null) return <LoginSkeleton />;
   if (!authenticated) return <Navigate to="/login" replace />;
   return children;
 }
@@ -19,6 +19,7 @@ function RequireAuth({ children }: { children: JSX.Element }) {
 
 function RedirectIfAuthed({ children }: { children: JSX.Element }) {
   const { authenticated } = useAuth();
+  if (authenticated === null) return <LoginSkeleton />;
   if (authenticated) return <Navigate to="/logs" replace />;
   return children;
 }

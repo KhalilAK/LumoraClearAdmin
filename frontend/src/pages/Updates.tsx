@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { api, ApiError, type CommitUpdate, type RepoOption } from "../api/client";
-import { LoadingIndicator } from "../components/LoadingIndicator";
 import { Skeleton } from "../components/Skeleton";
 
 function formatDate(value: string): string {
@@ -58,9 +57,17 @@ export function Updates() {
 
       {loading && (
         <section className="card">
-          <Skeleton height={220}>
-            <LoadingIndicator size="sm" label="Getting updates…" />
-          </Skeleton>
+          <div className="update-list">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <div key={i} className="update-entry">
+                <Skeleton width={36} height={36} style={{ borderRadius: 50, flexShrink: 0 }} />
+                <div className="update-body">
+                  <Skeleton height={14} width="70%" />
+                  <Skeleton height={12} width="40%" />
+                </div>
+              </div>
+            ))}
+          </div>
         </section>
       )}
 

@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { api, ApiError, type ThemeColorRow, type ThemeColorsResponse } from "../api/client";
 import { darkPalette, lightPalette } from "../theme/colors";
 import { useTheme } from "../context/ThemeContext";
-import { LoadingIndicator } from "../components/LoadingIndicator";
 import { Skeleton } from "../components/Skeleton";
 import { PhoneFrame, type PhoneFrameHandle } from "../components/PhoneFrame";
 import { ColorField } from "../components/ColorField";
@@ -136,9 +135,8 @@ export function ColorScheme() {
             </div>
           </section>
           <section className="card">
-            <Skeleton height={140}>
-              <LoadingIndicator size="sm" />
-            </Skeleton>
+            <Skeleton width="30%" height={20} style={{ marginBottom: 12 }} />
+            <Skeleton height={140} />
           </section>
         </div>
       )}

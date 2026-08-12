@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { api, ApiError, type CardStyleFields, type CardStyleResponse, type CardStyleRow } from "../api/client";
 import { lightPalette, darkPalette } from "../theme/colors";
-import { LoadingIndicator } from "../components/LoadingIndicator";
 import { Skeleton } from "../components/Skeleton";
 import { PhoneFrame, type PhoneFrameHandle } from "../components/PhoneFrame";
 import { ColorField } from "../components/ColorField";
@@ -149,9 +148,8 @@ export function CardStyleEditor() {
             </div>
           </section>
           <section className="card">
-            <Skeleton height={140}>
-              <LoadingIndicator size="sm" />
-            </Skeleton>
+            <Skeleton width="30%" height={20} style={{ marginBottom: 12 }} />
+            <Skeleton height={140} />
           </section>
         </div>
       )}
